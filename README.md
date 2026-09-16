@@ -31,6 +31,8 @@ The studio works independently of Polar. The native adapter currently targets **
 
 Website content keeps its own styling. This version does not restyle Polar’s sidebar, settings, or built-in agent interface.
 
+[See the themes running in Polar →](docs/GALLERY.md)
+
 ## Five starting points
 
 | Theme | Mood | Appearance |
