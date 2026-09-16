@@ -40,7 +40,26 @@ xcrun clang -fobjc-arc -framework AppKit -framework QuartzCore tests/native_fram
 build/test-native-frame
 ```
 
-The corrected build is installed; its final browser viewport check is pending macOS Keychain authorization. These checks do not constitute a complete native UI pass.
+The corrected installed build passed the live browser check on September 16, 2026. A local test page reported `innerWidth`, `innerHeight`, and every resize event. With Polar active, the following sizes matched; event counts remained unchanged during the subsequent observation intervals (two seconds per resize, three seconds after the final theme change):
+
+| Window size (points) | Frame inset | Reported viewport (CSS pixels) |
+| --- | --- | --- |
+| 900 × 660 | 20 | 860 × 620 |
+| 1100 × 800 | 20 | 1060 × 760 |
+| 1712 × 1068 | 20 | 1672 × 1028 |
+| 1712 × 1068 | 8 | 1696 × 1052 |
+
+The last row changed only the theme, without resizing the window or restarting Polar. The page reported a device pixel ratio of 2. Fixed labels at all four corners met the visible page edges. Backgrounded windows can defer rendering updates, so the measurements were collected with Polar active.
+
+Keyboard checks on the same installed build confirmed:
+
+- ⌘L opens the native floating palette while the toolbar stays hidden.
+- Escape dismisses the palette.
+- ⌘L followed by a URL and Enter navigates in the current tab. A per-tab session-storage marker remained unchanged across two navigations.
+- ⌘T followed by a URL and Enter creates another tab, with a distinct session-storage marker.
+- ⌘⇧D shows the original toolbar and address field, then returns to the themed frame.
+
+The test tabs were closed and the previous theme/undo state and window size restored. These checks verify the listed paths, not a complete native UI pass.
 
 ## Coverage limits
 
