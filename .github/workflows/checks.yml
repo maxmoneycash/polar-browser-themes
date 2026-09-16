@@ -27,3 +27,4 @@ jobs:
         with:
           python-version: '3.13'
       - run: python scripts/native_adapter.py build --library-only
+      - run: xcrun clang -fobjc-arc -framework AppKit -framework QuartzCore tests/native_frame.m native/ThemeFrame.m -o build/test-native-frame && build/test-native-frame

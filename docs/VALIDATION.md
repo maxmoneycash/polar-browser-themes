@@ -30,7 +30,17 @@ The README image is a screenshot of the illustrative studio. It is not evidence 
 
 Tested against an existing, logged-in Polar 0.1.92 installation, build 20260913071337, on Apple Silicon. The installer retained an untouched, signed backup, replaced only the application bundle, and Polar reopened with its existing tabs. Theme changes were observed without another restart, including a light Porcelain command palette and the dark Aurora palette. The floating palette accepts text and resizes to the result count.
 
-The latest frame paint-order adjustment is installed but its final visual check is pending a macOS Keychain authorization prompt. Palette verification above predates that adjustment. Do not treat this note as a complete native UI pass.
+The frame paint-order fix was verified on all four edges. Aurora and Porcelain updated the same open palette without a restart, Escape dismissed it, and ⌘⇧D restored the original tabs and toolbar. Window resizing at 900×660, 1100×800, and 1712×1068 kept the frame inset stable.
+
+That resizing check exposed a host-sizing issue at larger insets. The correction now resizes the browser host and its overlays with the page container. A native AppKit regression executable checks host alignment, thin overlays, inactive hosts, paint ordering, and toolbar restoration. Run it on macOS with:
+
+```sh
+mkdir -p build
+xcrun clang -fobjc-arc -framework AppKit -framework QuartzCore tests/native_frame.m native/ThemeFrame.m -o build/test-native-frame
+build/test-native-frame
+```
+
+The corrected build is installed; its final browser viewport check is pending macOS Keychain authorization. These checks do not constitute a complete native UI pass.
 
 ## Coverage limits
 

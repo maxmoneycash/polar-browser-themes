@@ -43,11 +43,28 @@ void PTApplyFrame(NSView *root, BOOL enabled) {
         // Polar's original layout has just run. Inset matching sibling overlays
         // along with the content container, preserving their coordinate alignment.
         NSRect original = page.frame;
+        NSSize contentSize = page.bounds.size;
         CGFloat extra = PTNumber(@"frame", @"inset") - 6;
         if (extra > 0 && original.size.width > extra * 2 && original.size.height > extra * 2) {
             for (NSView *peer in parent.subviews) {
                 if (peer != frame && NSEqualRects(peer.frame, original)) peer.frame = NSInsetRect(original, extra, extra);
             }
+            // Polar lays out its host surfaces and SwiftUI overlays explicitly;
+            // their autoresizing masks do not follow the container's new size.
+            // Update each formerly full-width/full-height child, then let the
+            // host's own layout synchronize the Chromium viewport.
+            for (NSView *child in page.subviews) {
+                NSRect childFrame = child.frame;
+                if (childFrame.origin.x == 0 && childFrame.size.width == contentSize.width)
+                    childFrame.size.width = page.bounds.size.width;
+                if (childFrame.origin.y == 0 && childFrame.size.height == contentSize.height)
+                    childFrame.size.height = page.bounds.size.height;
+                if (!NSEqualRects(child.frame, childFrame)) {
+                    child.frame = childFrame;
+                    child.needsLayout = YES;
+                }
+            }
+            [page layoutSubtreeIfNeeded];
         }
         page.wantsLayer = YES;
         page.layer.cornerRadius = PTNumber(@"frame", @"radius");
