@@ -1,0 +1,34 @@
+{
+  "$schema": "../schema/theme.schema.json",
+  "schemaVersion": 1,
+  "id": "porcelain",
+  "name": "Porcelain",
+  "author": "Polar Themes contributors",
+  "description": "Warm paper, soft edges, a clear violet accent.",
+  "appearance": "light",
+  "frame": {
+    "color": "#DED8CF",
+    "endColor": "#BEC6D4",
+    "angle": -40,
+    "inset": 8,
+    "radius": 12
+  },
+  "palette": {
+    "color": "#FCFAF6",
+    "endColor": "#EFEBE5",
+    "border": "#CDC7BD",
+    "text": "#29282E",
+    "muted": "#696674",
+    "accent": "#5C51CC",
+    "accentText": "#FFFFFF",
+    "angle": -45,
+    "radius": 16,
+    "rowRadius": 7,
+    "width": 640,
+    "rowHeight": 44,
+    "fontSize": 14
+  },
+  "controls": {
+    "hidden": true
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "../schema/theme.schema.json",
+  "schemaVersion": 1,
+  "id": "ember",
+  "name": "Ember",
+  "author": "Polar Themes contributors",
+  "description": "A warm copper frame with a charcoal palette.",
+  "appearance": "dark",
+  "frame": {
+    "color": "#9D5040",
+    "endColor": "#482C40",
+    "angle": -40,
+    "inset": 8,
+    "radius": 12
+  },
+  "palette": {
+    "color": "#312321",
+    "endColor": "#231C23",
+    "border": "#75534D",
+    "text": "#FFF2E8",
+    "muted": "#C5A99A",
+    "accent": "#F0AD84",
+    "accentText": "#331F19",
+    "angle": -45,
+    "radius": 16,
+    "rowRadius": 7,
+    "width": 640,
+    "rowHeight": 44,
+    "fontSize": 14
+  },
+  "controls": {
+    "hidden": true
+  }
+}

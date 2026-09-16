@@ -1,0 +1,34 @@
+{
+  "$schema": "../schema/theme.schema.json",
+  "schemaVersion": 1,
+  "id": "midnight",
+  "name": "Midnight",
+  "author": "Polar Themes contributors",
+  "description": "An indigo frame and a quiet, ink-dark palette.",
+  "appearance": "dark",
+  "frame": {
+    "color": "#252944",
+    "endColor": "#12182D",
+    "angle": -40,
+    "inset": 8,
+    "radius": 12
+  },
+  "palette": {
+    "color": "#182934",
+    "endColor": "#20242C",
+    "border": "#46515B",
+    "text": "#F4F5FA",
+    "muted": "#A0ADBA",
+    "accent": "#6D68E8",
+    "accentText": "#FFFFFF",
+    "angle": -45,
+    "radius": 16,
+    "rowRadius": 7,
+    "width": 640,
+    "rowHeight": 44,
+    "fontSize": 14
+  },
+  "controls": {
+    "hidden": true
+  }
+}

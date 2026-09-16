@@ -1,0 +1,3 @@
+#!/usr/bin/env python3
+from polar_themes.cli import main
+main()

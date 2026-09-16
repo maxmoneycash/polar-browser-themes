@@ -1,0 +1,29 @@
+name: Bug report
+description: Report a studio, theme, or native adapter problem
+body:
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Affected component
+      options:
+        - Theme Studio
+        - CLI / validation
+        - Native adapter
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: OS and Polar version/build
+      description: Include the exact build for native issues. Do not include personal paths.
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction and expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Theme JSON or screenshot
+      description: Remove personal content. Never upload your browser profile or app bundle.

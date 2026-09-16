@@ -1,0 +1,179 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,47}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    },
+    "author": {
+      "type": "string",
+      "maxLength": 80
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "appearance": {
+      "type": "string",
+      "enum": [
+        "dark",
+        "light"
+      ]
+    },
+    "frame": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "endColor": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "angle": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "inset": {
+          "type": "number",
+          "minimum": 6,
+          "maximum": 20
+        },
+        "radius": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 24
+        }
+      },
+      "required": [
+        "color",
+        "endColor",
+        "angle",
+        "inset",
+        "radius"
+      ],
+      "additionalProperties": false
+    },
+    "palette": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "endColor": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "angle": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "border": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "text": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "muted": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "accent": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "accentText": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "radius": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 24
+        },
+        "rowRadius": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 14
+        },
+        "width": {
+          "type": "number",
+          "minimum": 480,
+          "maximum": 860
+        },
+        "rowHeight": {
+          "type": "number",
+          "minimum": 36,
+          "maximum": 60
+        },
+        "fontSize": {
+          "type": "number",
+          "minimum": 12,
+          "maximum": 20
+        }
+      },
+      "required": [
+        "color",
+        "endColor",
+        "angle",
+        "border",
+        "text",
+        "muted",
+        "accent",
+        "accentText",
+        "radius",
+        "rowRadius",
+        "width",
+        "rowHeight",
+        "fontSize"
+      ],
+      "additionalProperties": false
+    },
+    "controls": {
+      "type": "object",
+      "properties": {
+        "hidden": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "hidden"
+      ],
+      "additionalProperties": false
+    },
+    "$schema": {
+      "type": "string",
+      "maxLength": 240
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "author",
+    "description",
+    "appearance",
+    "frame",
+    "palette",
+    "controls"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxmoneycash.github.io/polar-browser-themes/schema/theme.schema.json",
+  "title": "Polar Browser Theme v1"
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "midnight",
+    "name": "Midnight"
+  },
+  {
+    "id": "aurora",
+    "name": "Aurora"
+  },
+  {
+    "id": "ember",
+    "name": "Ember"
+  },
+  {
+    "id": "porcelain",
+    "name": "Porcelain"
+  },
+  {
+    "id": "graphite",
+    "name": "Graphite"
+  }
+]

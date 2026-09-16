@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Polar Themes — make Polar Browser yours</title>
+  <meta name="description" content="An open-source theme studio for Polar Browser. Create, preview and share native macOS browser themes with a single JSON file.">
+  <meta name="theme-color" content="#F6F5F1">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Polar Themes home"><span class="mark" aria-hidden="true">◒</span><strong>polar<span>themes</span></strong><span class="tag">COMMUNITY</span></a>
+    <nav aria-label="Project"><a href="https://github.com/maxmoneycash/polar-browser-themes#quick-start">Get started <span>↗</span></a><a href="https://github.com/maxmoneycash/polar-browser-themes">GitHub <span>↗</span></a></nav>
+  </header>
+  <main>
+    <section class="intro"><div><p class="eyebrow">A LITTLE MORE YOU</p><h1>Make Polar yours<span>.</span></h1><p class="lede">A new atmosphere for your everyday browser.<br>Pick a starting point. Make something that feels like home.</p></div><div class="intro-note"><span class="status-dot"></span><span id="connection">Theme preview</span><small>OPEN SOURCE · BUILT FOR MACOS</small></div></section>
+    <section class="workspace" aria-label="Theme editor">
+      <aside class="presets"><div class="section-label">START SOMEWHERE <span>01—05</span></div><div id="theme-list" role="group" aria-label="Theme presets"></div><div class="preset-foot">Your taste. One JSON file.<br><button id="import" class="text-button">Import a theme <span>↑</span></button><input type="file" id="file" accept=".json,application/json" hidden></div></aside>
+      <div class="stage-wrap"><div class="stage-top"><span><span class="tiny-dot"></span> LIVE PREVIEW</span><button id="toggle-palette" aria-pressed="true">⌘L <span>Palette</span></button></div>
+        <div id="stage" class="stage"><div class="window-shadow"><div class="preview-window" id="preview-window"><div class="browser-controls" id="browser-controls"><span class="traffic">● ● ●</span><span>Polar Browser</span><span>＋</span></div><div class="preview-page"><div class="page-nav"><span class="page-wordmark">Space to think.</span><span>Read &nbsp; Explore &nbsp; Create</span></div><div class="page-content"><span class="page-kicker">A QUIETER CORNER OF THE INTERNET</span><h2>Good things<br>take a little space.</h2><p>For the ideas you haven't had yet.</p><div class="page-links"><span>01 &nbsp; A fresh start ↗</span><span>02 &nbsp; Something worth saving ↗</span></div></div><div class="page-bottom">YOUR NEXT CHAPTER STARTS HERE <span>↗</span></div></div>
+          <div id="palette" class="palette"><div class="palette-input"><span aria-hidden="true">⌕</span><span>Search or enter URL…</span><kbd>esc</kbd></div><div class="palette-divider"></div><div class="palette-rows"><div class="palette-row selected"><span class="row-icon">◒</span><span class="row-name">Polar Themes — make it yours</span><span class="row-hint">Switch to Tab</span><span>↵</span></div><div class="palette-row"><span class="row-icon">↗</span><span class="row-name">Your next big idea</span><span class="row-hint">Switch to Tab</span><span>→</span></div><div class="palette-row"><span class="row-icon">⌘</span><span class="row-name">localhost:3000</span><span class="row-hint">Switch to Tab</span><span>→</span></div></div></div>
+        </div></div></div><div class="stage-caption"><div><h2 id="theme-title">Midnight</h2><p id="theme-description"></p></div><span id="appearance-badge">DARK</span></div><p class="preview-note">Illustrative preview. Themes style Polar’s frame and native palette; website content stays its own.</p>
+      </div>
+      <aside class="inspector"><div class="inspector-heading"><h2>Make it your own</h2><button id="reset" class="text-button">Reset</button></div><label class="name-label" for="theme-name">Theme name</label><input id="theme-name" type="text" maxlength="60" autocomplete="off"><div class="inspector-tabs" role="tablist" aria-label="Theme settings"><button role="tab" id="tab-colors" aria-selected="true" aria-controls="colors">Colors</button><button role="tab" id="tab-shape" aria-selected="false" aria-controls="shape">Shape</button><button role="tab" id="tab-json" aria-selected="false" aria-controls="json-panel">JSON</button></div><div id="colors" role="tabpanel" aria-labelledby="tab-colors"></div><div id="shape" role="tabpanel" aria-labelledby="tab-shape" hidden></div><div id="json-panel" role="tabpanel" aria-labelledby="tab-json" hidden><label for="json-editor" class="name-label">Theme source</label><textarea id="json-editor" spellcheck="false" aria-describedby="json-help"></textarea><p id="json-help">Edit the source, then validate it before previewing.</p><button id="validate-json" class="secondary">Validate & preview</button></div><div class="export-area"><button id="export" class="primary">Export theme <span>↓</span></button><button id="apply" class="secondary" hidden>Apply to Polar</button><p id="apply-note">Export a JSON file to use with the native adapter.</p></div></aside>
+    </section>
+    <div id="message" role="status" aria-live="polite"></div>
+    <footer><span>Made to be made your own.</span><span>Unofficial · Polar Browser 0.1.92 · <a href="https://github.com/maxmoneycash/polar-browser-themes/blob/main/LICENSE">MIT licensed</a></span></footer>
+  </main>
+</body>
+</html>
