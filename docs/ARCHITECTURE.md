@@ -39,7 +39,9 @@ Hosted mode only reads bundled presets and exports files. Local mode binds an HT
 
 `ZenPalette.m` draws native AppKit controls. Navigation uses the same version-specific Swift bridge as the original prototype. Search text never becomes a shell command. Theme appearance is scoped to the palette window; it does not change the web page’s preferred color scheme.
 
-`ThemeFrame.m` adds a non-interactive gradient backdrop behind Polar’s content container. After the original layout executes, it adjusts the content and matching overlays together, then applies continuous corner clipping. Showing the original controls hides the custom backdrop.
+`ThemeFrame.m` adds a non-interactive gradient backdrop behind Polar’s content container. During the original browser layout, it transforms frame assignments on the page container and browser host before the host can publish its viewport to Chromium. The overrides are restricted to those two Polar classes and the active browser layout. Afterward, it aligns matching overlays and applies continuous corner clipping. Showing the original controls hides the custom backdrop and preserves native geometry.
+
+The ordering matters: resizing the browser host after native layout creates competing viewport sizes and can trigger an endless resize loop. The AppKit regression test observes frame notifications, checks that only the final themed size is published, and verifies that repeated layouts do not change it.
 
 ## Compatibility adapter
 

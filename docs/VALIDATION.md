@@ -32,7 +32,7 @@ Tested against an existing, logged-in Polar 0.1.92 installation, build 202609130
 
 The frame paint-order fix was verified on all four edges. Aurora and Porcelain updated the same open palette without a restart, Escape dismissed it, and ⌘⇧D restored the original tabs and toolbar. Window resizing at 900×660, 1100×800, and 1712×1068 kept the frame inset stable.
 
-That resizing check exposed a host-sizing issue at larger insets. The correction now resizes the browser host and its overlays with the page container. A native AppKit regression executable checks host alignment, thin overlays, inactive hosts, paint ordering, and toolbar restoration. Run it on macOS with:
+The live viewport check exposed a resize feedback loop in the first host-sizing correction. The revised adapter transforms page and host dimensions during native layout, before Chromium receives them. A native AppKit regression executable checks intermediate viewport notifications, stability across repeated layout passes, host alignment, thin overlays, inactive hosts, paint ordering, and toolbar restoration. Run it on macOS with:
 
 ```sh
 mkdir -p build

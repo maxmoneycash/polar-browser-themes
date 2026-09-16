@@ -42,7 +42,7 @@ open -a Polar
 
 The installer backs up the untouched, signed original in `~/Library/Application Support/Polar Themes/backups/`. It stages the replacement beside the installed app and preserves the previous app for rollback. Browser profiles and cookies are not modified by the installer.
 
-macOS may request Keychain access because the outer app’s signing identity changed. The locally signed app may not support identity-bound features such as passkeys. Use the original browser if those features are required.
+macOS may request Keychain access because the outer app’s signing identity changed. Another native rebuild can trigger the request again; editing a theme JSON file does not change the signature. Enter a password only in the macOS dialog. The locally signed app may not support identity-bound features such as passkeys. Use the original browser if those features are required.
 
 ## Change your theme
 

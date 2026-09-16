@@ -1,6 +1,5 @@
 #import <AppKit/AppKit.h>
 #import "ThemeRuntime.h"
-extern void PTApplyFrame(NSView *, BOOL);
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import <mach-o/dyld.h>
@@ -120,8 +119,7 @@ void ZenNavigate(NSWindow *window, NSString *input, BOOL newTab) {
 }
 
 static void zenBrowserLayout(NSView *view, SEL selector) {
-    originalBrowserLayout(view, selector);
-    PTApplyFrame(view, !*controls);
+    PTLayoutFrame(view, !*controls, ^{ originalBrowserLayout(view, selector); });
 }
 
 static NSMenuItem *menuItem(NSMenu *menu, NSString *title) {

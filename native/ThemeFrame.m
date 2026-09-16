@@ -14,6 +14,53 @@
 }
 @end
 
+// Transform native frame assignments before LayerHostSurfaceView can publish
+// them to Chromium. Resizing the host after layout alternates between two
+// viewport sizes and feeds another layout back into the browser indefinitely.
+// Only these two Polar classes are hooked; unrelated NSViews are untouched.
+static __unsafe_unretained NSView *layoutRoot;
+static CGFloat layoutExtra;
+static char nativeFrameKey;
+static void (*originalPageSetFrame)(NSView *, SEL, NSRect);
+static void (*originalHostSetFrame)(NSView *, SEL, NSRect);
+
+static NSRect adjustedChildFrame(NSView *page, NSRect rect) {
+    NSValue *nativeValue = objc_getAssociatedObject(page, &nativeFrameKey);
+    if (!nativeValue) return rect;
+    NSSize nativeSize = nativeValue.rectValue.size;
+    if (rect.origin.x == 0 && rect.size.width > 0 && rect.size.width == nativeSize.width)
+        rect.size.width = page.bounds.size.width;
+    if (rect.origin.y == 0 && rect.size.height > 0 && rect.size.height == nativeSize.height)
+        rect.size.height = page.bounds.size.height;
+    return rect;
+}
+
+static void pageSetFrame(NSView *page, SEL selector, NSRect rect) {
+    if (layoutRoot && [page isDescendantOf:layoutRoot]) {
+        objc_setAssociatedObject(page, &nativeFrameKey, [NSValue valueWithRect:rect], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        if (layoutExtra > 0 && rect.size.width > 100 && rect.size.height > layoutExtra * 2)
+            rect = NSInsetRect(rect, layoutExtra, layoutExtra);
+    }
+    originalPageSetFrame(page, selector, rect);
+}
+
+static void hostSetFrame(NSView *host, SEL selector, NSRect rect) {
+    if (layoutRoot && layoutExtra > 0 && [host isDescendantOf:layoutRoot])
+        rect = adjustedChildFrame(host.superview, rect);
+    originalHostSetFrame(host, selector, rect);
+}
+
+static IMP installFrameHook(NSString *name, IMP replacement) {
+    Class cls = NSClassFromString(name);
+    Method inherited = class_getInstanceMethod(cls, @selector(setFrame:));
+    if (!inherited) return NULL;
+    IMP original = method_getImplementation(inherited);
+    // Adding an override must not mutate the inherited NSView implementation.
+    if (!class_addMethod(cls, @selector(setFrame:), replacement, method_getTypeEncoding(inherited)))
+        class_replaceMethod(cls, @selector(setFrame:), replacement, method_getTypeEncoding(inherited));
+    return original;
+}
+
 static void collectPages(NSView *view, NSMutableArray *pages) {
     for (NSView *child in view.subviews) {
         if ([NSStringFromClass(child.class) isEqual:@"PolarApp.ContentInteractionContainerView"]) [pages addObject:child];
@@ -21,7 +68,7 @@ static void collectPages(NSView *view, NSMutableArray *pages) {
     }
 }
 
-void PTApplyFrame(NSView *root, BOOL enabled) {
+static void applyFrame(NSView *root, BOOL enabled) {
     NSMutableArray<NSView *> *pages = [NSMutableArray array]; collectPages(root, pages);
     for (NSView *page in pages) {
         NSView *parent = page.superview;
@@ -42,29 +89,22 @@ void PTApplyFrame(NSView *root, BOOL enabled) {
         if (page.hidden || page.frame.size.width < 100) continue;
         // Polar's original layout has just run. Inset matching sibling overlays
         // along with the content container, preserving their coordinate alignment.
-        NSRect original = page.frame;
-        NSSize contentSize = page.bounds.size;
-        CGFloat extra = PTNumber(@"frame", @"inset") - 6;
-        if (extra > 0 && original.size.width > extra * 2 && original.size.height > extra * 2) {
+        NSValue *nativeValue = objc_getAssociatedObject(page, &nativeFrameKey);
+        NSRect original = nativeValue.rectValue;
+        if (nativeValue && !NSEqualRects(original, page.frame)) {
             for (NSView *peer in parent.subviews) {
-                if (peer != frame && NSEqualRects(peer.frame, original)) peer.frame = NSInsetRect(original, extra, extra);
+                if (peer != frame && peer != page && NSEqualRects(peer.frame, original)) peer.frame = page.frame;
             }
-            // Polar lays out its host surfaces and SwiftUI overlays explicitly;
-            // their autoresizing masks do not follow the container's new size.
-            // Update each formerly full-width/full-height child, then let the
-            // host's own layout synchronize the Chromium viewport.
+            // Non-browser overlays may still use the original native dimensions.
+            // The browser host has already received its final size during layout.
             for (NSView *child in page.subviews) {
-                NSRect childFrame = child.frame;
-                if (childFrame.origin.x == 0 && childFrame.size.width == contentSize.width)
-                    childFrame.size.width = page.bounds.size.width;
-                if (childFrame.origin.y == 0 && childFrame.size.height == contentSize.height)
-                    childFrame.size.height = page.bounds.size.height;
+                if ([NSStringFromClass(child.class) isEqual:@"PolarApp.LayerHostSurfaceView"]) continue;
+                NSRect childFrame = adjustedChildFrame(page, child.frame);
                 if (!NSEqualRects(child.frame, childFrame)) {
                     child.frame = childFrame;
                     child.needsLayout = YES;
                 }
             }
-            [page layoutSubtreeIfNeeded];
         }
         page.wantsLayer = YES;
         page.layer.cornerRadius = PTNumber(@"frame", @"radius");
@@ -72,4 +112,23 @@ void PTApplyFrame(NSView *root, BOOL enabled) {
         page.layer.maskedCorners = kCALayerMinXMinYCorner | kCALayerMaxXMinYCorner | kCALayerMinXMaxYCorner | kCALayerMaxXMaxYCorner;
         page.layer.masksToBounds = YES;
     }
+}
+
+void PTLayoutFrame(NSView *root, BOOL enabled, void (^nativeLayout)(void)) {
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        originalPageSetFrame = (void *)installFrameHook(@"PolarApp.ContentInteractionContainerView", (IMP)pageSetFrame);
+        originalHostSetFrame = (void *)installFrameHook(@"PolarApp.LayerHostSurfaceView", (IMP)hostSetFrame);
+    });
+    NSView *previousRoot = layoutRoot;
+    CGFloat previousExtra = layoutExtra;
+    layoutRoot = root;
+    layoutExtra = enabled ? PTNumber(@"frame", @"inset") - 6 : 0;
+    @try {
+        nativeLayout();
+    } @finally {
+        layoutRoot = previousRoot;
+        layoutExtra = previousExtra;
+    }
+    applyFrame(root, enabled);
 }
