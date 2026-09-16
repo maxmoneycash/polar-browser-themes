@@ -23,7 +23,7 @@ def validate(value, rule, path="theme"):
     kind = rule.get("type")
     good = {"object": lambda: isinstance(value, dict),
             "string": lambda: isinstance(value, str),
-            "number": lambda: type(value) in (int, float) and math.isfinite(value),
+            "number": lambda: type(value) is int or (type(value) is float and math.isfinite(value)),
             "integer": lambda: type(value) is int,
             "boolean": lambda: type(value) is bool}
     if kind in good and not good[kind]():

@@ -19,6 +19,8 @@ Tested in an existing Arc browser using its Playwriter extension:
 - Arrow keys navigate the inspector tabs.
 - Invalid JSON is rejected and valid JSON updates the preview.
 - Exported Porcelain JSON downloads and passes the Python validator.
+- Importing that exported file restores Porcelain in the editor.
+- The authenticated local studio saves Midnight through its Apply button and removes the capability token from the visible URL.
 - A 390-pixel viewport has no horizontal document overflow.
 - Desktop and mobile previews were visually inspected.
 
@@ -27,6 +29,8 @@ The README image is a screenshot of the illustrative studio. It is not evidence 
 ## Native verification
 
 Tested against an existing, logged-in Polar 0.1.92 installation, build 20260913071337, on Apple Silicon. The installer retained an untouched, signed backup, replaced only the application bundle, and Polar reopened with its existing tabs. Theme changes were observed without another restart, including a light Porcelain command palette and the dark Aurora palette. The floating palette accepts text and resizes to the result count.
+
+The latest frame paint-order adjustment is installed but its final visual check is pending a macOS Keychain authorization prompt. Palette verification above predates that adjustment. Do not treat this note as a complete native UI pass.
 
 ## Coverage limits
 

@@ -23,6 +23,7 @@ class Themes(unittest.TestCase):
                      lambda t: t["palette"].update(color="url(https://example.com)"),
                      lambda t: t["frame"].update(radius=-1),
                      lambda t: t["palette"].update(width=20000),
+                     lambda t: t["palette"].update(width=10 ** 1000),
                      lambda t: t.update(schemaVersion=True),
                      lambda t: t["frame"].update(inset=float("nan")),
                      lambda t: t["controls"].update(hidden="false"),

@@ -60,4 +60,3 @@ def patched_bytes(original):
         changes.append(dict(address=hex(address), offset=offset, before=hex(before),
                             after=hex(after), purpose=purpose))
     return bytes(modified), changes
-
